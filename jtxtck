@@ -1,0 +1,49 @@
+#!/bin/bash
+
+### HELP ###
+
+usage()
+{
+    echo "usage: <command> options:<d|r|h>"
+    echo "-d = Domainname for example google.de"
+    echo "-r = Name of TXT value for example MS"
+    echo "For further information ask Clément for help"
+}
+
+no_args="true"
+while getopts d:r: option
+do
+case "${option}"
+in
+d) DOMAIN=${OPTARG};;
+r) RECORD=${OPTARG};;
+esac
+no_args="false"
+done
+
+[[ "$no_args" == "true" ]] && { usage; exit 1; }
+
+
+if [ -z "$DOMAIN" ]
+then
+	echo "Domain name required! [-d]"
+fi
+
+if [ -z "$RECORD" ]
+then
+	echo "Record name required! [-r]"
+fi
+
+if [ ! -z "$DOMAIN" ] && [ ! -z "$RECORD" ]
+then
+	RESULT="$(host -t txt $DOMAIN | grep $RECORD | cut -d "=" -f2 | sed 's/.$//')"	
+fi
+
+if [ -z "$RESULT" ]
+then
+	echo "No TXT Record with name $RECORD at $DOMAIN found!"
+else
+	echo "Record(s) found!"
+	echo "Value(s):"
+	echo  "$RESULT"
+fi
