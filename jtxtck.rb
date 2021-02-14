@@ -3,7 +3,7 @@ class jtxtck < Formula
   homepage "https://github.com/ClemensRau1337/jtxtck"
 
 
-  url "https://github.com/ClemensRau1337/jtxtck/get/HEAD.zip", :using => :curl
+  url "https://github.com/ClemensRau1337/jtxtck/archive/main.zip", :using => :curl
 
   def install
     bin.install "ClemensRau1337/jtxtck"
